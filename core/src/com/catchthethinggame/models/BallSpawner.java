@@ -1,6 +1,7 @@
 package com.catchthethinggame.models;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import java.util.List;
@@ -20,12 +21,17 @@ public class BallSpawner extends Sprite {
     }
 
     public void update() {
+        float delta = Gdx.graphics.getDeltaTime();
+
+        if(Gdx.input.isKeyPressed(Input.Keys.SPACE))
+            delta = delta / 4;
+
         if(this.timer >= this.cooldown) {
             this.spawnBall();
             this.resetTimer();
             this.generateCooldown();
         } else {
-            this.updateTimer();
+            this.updateTimer(delta);
         }
     }
 
@@ -41,8 +47,8 @@ public class BallSpawner extends Sprite {
         this.timer = 0.0;
     }
 
-    private void updateTimer() {
-        this.timer += Gdx.graphics.getDeltaTime();
+    private void updateTimer(float delta) {
+        this.timer += delta;
     }
 
 }
