@@ -34,6 +34,10 @@ public class Ball extends Sprite {
 
     public void update() {
         float delta = Gdx.graphics.getDeltaTime();
+
+        if(Gdx.input.isKeyPressed(Input.Keys.SPACE))
+            delta = delta / 4;
+
         float newXPosition = this.getX() + speed.x * delta;
         float newYPosition = this.getY() + speed.y * delta;
         this.setPosition(newXPosition, newYPosition);
