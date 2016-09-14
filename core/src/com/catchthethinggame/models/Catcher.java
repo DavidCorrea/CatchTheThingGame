@@ -25,7 +25,6 @@ public class Catcher extends Sprite {
     }
 
     public void update() {
-        float delta = Gdx.graphics.getDeltaTime();
         float speedX;
 
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
@@ -38,6 +37,7 @@ public class Catcher extends Sprite {
 
         this.speed.set(speedX, 0);
 
+        float delta = Gdx.graphics.getDeltaTime();
         float newXPosition = this.getX() + speed.x * delta;
         float newYPosition = this.getY() + speed.y * delta;
         this.setPosition(newXPosition, newYPosition);
