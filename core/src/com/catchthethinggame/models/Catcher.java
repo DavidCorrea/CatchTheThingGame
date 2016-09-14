@@ -2,9 +2,11 @@ package com.catchthethinggame.models;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -13,18 +15,26 @@ public class Catcher extends Sprite {
     private final Rectangle catchZone;
     private Vector2 speed;
     private float speedMagnitude;
+    private ShapeRenderer shapeRenderer;
 
     public Catcher() {
         super(new Texture("catcher.png"));
-        this.setSize(110, 110);
+        this.setSize(180, 80);
         this.setPosition(330, 30);
         this.speed = new Vector2(0, 0);
         this.speedMagnitude = 600.0f;
-        this.catchZone = new Rectangle(this.getX() + 25, this.getY() + 60, 60, 1);
+        this.catchZone = new Rectangle(this.getX() + 40, this.getY(), 100, 20);
+        this.shapeRenderer = new ShapeRenderer();
     }
 
     public void render(SpriteBatch spriteBatch) {
         this.draw(spriteBatch);
+        spriteBatch.end();
+        this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        this.shapeRenderer.setColor(Color.YELLOW);
+        this.shapeRenderer.rect(this.getX() + 40, this.getY(), 100, 20);
+        this.shapeRenderer.end();
+        spriteBatch.begin();
     }
 
     public void update() {
