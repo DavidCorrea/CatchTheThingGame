@@ -1,7 +1,6 @@
 package com.catchthethinggame.models;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -46,6 +45,7 @@ public class Ball extends Sprite {
         if(isCatchedBy(catcher)) {
             this.catched = true;
             score.increase();
+            catcher.catched();
         }
     }
 
