@@ -5,11 +5,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.catchthethinggame.helpers.Score;
+import com.catchthethinggame.helpers.Events;
+import com.catchthethinggame.models.Score;
 import com.catchthethinggame.models.Ball;
 import com.catchthethinggame.models.BallSpawner;
 import com.catchthethinggame.models.Catcher;
@@ -29,14 +29,11 @@ public class GameScreen extends ScreenAdapter {
     private BallSpawner ballSpawner;
     private List<Ball> balls;
     private Score score;
-    private OrthographicCamera camera;
 
     public GameScreen(SpriteBatch spriteBatch) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
 
         this.spriteBatch = spriteBatch;
-        this.initializeCamera();
-
         this.catcher = new Catcher();
         this.catcherShadow = new CatcherShadow(this.catcher);
         this.balls = new ArrayList<Ball>();
@@ -51,37 +48,12 @@ public class GameScreen extends ScreenAdapter {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         this.update();
-
-        this.spriteBatch.begin();
-        this.spriteBatch.draw(this.background, 0, 0);
-        this.spriteBatch.draw(this.backgroundDetail, 200, 80);
-
-        this.catcherShadow.render(this.spriteBatch);
-
-        for (Ball ball : this.balls) {
-            ball.render(this.spriteBatch);
-        }
-
-        this.catcher.render(this.spriteBatch);
-        this.bitMapFont.draw(this.spriteBatch, "Current Score: " + this.score.getActual(), 10, 20);
-        this.bitMapFont.draw(this.spriteBatch, "Press SPACE to slow things a bit", 580, 20);
-        this.bitMapFont.draw(this.spriteBatch, "Press SHIFT to move faster", 580, 40);
-
-        if(Gdx.input.isKeyPressed(Input.Keys.SPACE))
-            this.spriteBatch.setColor(Color.BLUE);
-        else
-            this.spriteBatch.setColor(Color.WHITE.toFloatBits());
-
-        this.spriteBatch.end();
+        this.renderComponents();
     }
 
     @Override
     public void dispose() {
         this.spriteBatch.dispose();
-    }
-
-    private void initializeCamera() {
-        this.camera = new OrthographicCamera(800, 600);
     }
 
     private void update() {
@@ -90,5 +62,40 @@ public class GameScreen extends ScreenAdapter {
         for (Ball ball : this.balls) {
             ball.update(this.catcher, this.score);
         }
+    }
+
+    private void renderComponents() {
+        this.spriteBatch.begin();
+        this.renderBackground();
+        this.catcherShadow.render(this.spriteBatch);
+        this.renderBalls();
+        this.catcher.render(this.spriteBatch);
+        this.renderText();
+        this.changeColorIfSlowMotion();
+        this.spriteBatch.end();
+    }
+
+    private void renderBackground() {
+        this.spriteBatch.draw(this.background, 0, 0);
+        this.spriteBatch.draw(this.backgroundDetail, 200, 80);
+    }
+
+    private void renderBalls() {
+        for (Ball ball : this.balls) {
+            ball.render(this.spriteBatch);
+        }
+    }
+
+    private void renderText() {
+        this.bitMapFont.draw(this.spriteBatch, "Current Score: " + this.score.getActual(), 10, 20);
+        this.bitMapFont.draw(this.spriteBatch, "Press SPACE to slow things a bit", 580, 20);
+        this.bitMapFont.draw(this.spriteBatch, "Press SHIFT to move faster", 580, 40);
+    }
+
+    private void changeColorIfSlowMotion() {
+        if(Events.isSlowMotionActive())
+            this.spriteBatch.setColor(Color.BLUE);
+        else
+            this.spriteBatch.setColor(Color.WHITE.toFloatBits());
     }
 }

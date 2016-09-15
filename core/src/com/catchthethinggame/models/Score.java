@@ -1,4 +1,4 @@
-package com.catchthethinggame.helpers;
+package com.catchthethinggame.models;
 
 public class Score {
 

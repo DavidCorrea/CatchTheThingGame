@@ -3,6 +3,7 @@ package com.catchthethinggame.models;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.catchthethinggame.helpers.Events;
 
 import java.util.List;
 import java.util.Random;
@@ -15,15 +16,15 @@ public class BallSpawner extends Sprite {
 
     public BallSpawner(List<Ball> balls) {
         this.generateCooldown();
-        this.setPosition(0, 550);
         this.resetTimer();
+        this.setPosition(0, 550);
         this.balls = balls;
     }
 
     public void update() {
         float delta = Gdx.graphics.getDeltaTime();
 
-        if(Gdx.input.isKeyPressed(Input.Keys.SPACE))
+        if(Events.isSlowMotionActive())
             delta = delta / 4;
 
         if(this.timer >= this.cooldown) {
